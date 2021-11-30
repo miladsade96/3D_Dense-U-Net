@@ -1,5 +1,5 @@
 # 3D Dense U-Net
-Optimized High Resolution 3D Dense-U-Net Network for Brain and Spine Segmentation
+### Optimized High Resolution 3D Dense-U-Net Network for Brain and Spine Segmentation
 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/everlookneversee/3d_dense-u-net/badge)](https://www.codefactor.io/repository/github/everlookneversee/3d_dense-u-net)
@@ -17,4 +17,10 @@ Optimized High Resolution 3D Dense-U-Net Network for Brain and Spine Segmentatio
 ![GitHub last commit](https://img.shields.io/github/last-commit/EverLookNeverSee/3D_Dense-U-Net)
 
 
+### Model Schema
 ![](Data/3D%20Dense%20U-Net.png)
+
+
+### About
+This repository contains the implementation of [Optimized High Resolution 3D Dense-U-Net Network for Brain and Spine Segmentation](https://www.mdpi.com/2076-3417/9/3/404)
+using tensorflow and keras.
