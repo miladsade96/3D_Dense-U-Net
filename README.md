@@ -20,6 +20,9 @@
 ### Model Schema
 ![](Data/3D%20Dense%20U-Net.png)
 
+### Examples
+![](Data/Examples.jpg)
+
 
 ### About
 This repository contains the implementation of [Optimized High Resolution 3D Dense-U-Net Network for Brain and Spine Segmentation](https://www.mdpi.com/2076-3417/9/3/404)
