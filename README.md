@@ -38,7 +38,7 @@ Paper:
 * Malay Kishore Dutta - Centre for Advanced Studies, Dr. A.P.J. Abdul Kalam Technical University
 
 Codebase:
-* [Milad Sadeghi DM](https://elns.ir) - EverLookNeverSee@GitHub.com
+* [Milad Sadeghi DM](https://elns.ir) - EverLookNeverSee@GitHub
 
 
 ## License
