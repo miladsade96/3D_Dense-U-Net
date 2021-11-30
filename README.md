@@ -36,3 +36,7 @@ Paper:
 
 Codebase:
 * [Milad Sadeghi DM](https://elns.ir) - EverLookNeverSee@GitHub.com
+
+
+## License
+This project licensed under the MIT License - see the [LICENSE](LICENSE) file for more details.
