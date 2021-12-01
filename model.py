@@ -5,5 +5,10 @@
 """
 
 
+import tensorflow.keras.backend as K
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import (Conv3DTranspose, Conv3D, MaxPooling3D, concatenate, Input)
+
+
+# Setting image data format
+K.set_image_data_format("channels_last")
