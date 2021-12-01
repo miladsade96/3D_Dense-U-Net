@@ -12,3 +12,7 @@ from tensorflow.keras.layers import (Conv3DTranspose, Conv3D, MaxPooling3D, conc
 
 # Setting image data format
 K.set_image_data_format("channels_last")
+
+# Kernel(Pool) Size
+BRAIN = (2, 2, 2)
+SPINE = (1, 2, 3)
