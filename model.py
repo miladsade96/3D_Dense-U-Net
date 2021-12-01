@@ -16,7 +16,7 @@ K.set_image_data_format("channels_last")
 
 # Kernel(Pool) Size
 BRAIN = (2, 2, 2)
-SPINE = (1, 2, 3)
+SPINE = (1, 2, 2)
 
 # Image Dimensions
 img_height = 256
@@ -65,3 +65,12 @@ conv_42 = Conv3D(filters=256, kernel_size=(3, 3, 3), padding="same", activation=
 # Concatenation of mp_3, conv_42
 concat_8 = concatenate([mp_3, conv_42], axis=4)
 mp_4 = MaxPooling3D(pool_size=BRAIN, strides=(2, 2, 2), padding="same")(concat_8)
+
+
+# Defining the bridge block
+conv_51 = Conv3D(filters=512, kernel_size=(3, 3, 3), padding="same", activation=relu)(mp_4)
+# Concatenation of mp_4, conv_51
+concat_9 = concatenate([mp_4, conv_51], axis=4)
+conv_52 = Conv3D(filters=512, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_9)
+# Concatenation of mp_4, conv_52
+concat_10 = concatenate([mp_4, conv_52], axis=4)
