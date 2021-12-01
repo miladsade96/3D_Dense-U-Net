@@ -74,3 +74,53 @@ concat_9 = concatenate([mp_4, conv_51], axis=4)
 conv_52 = Conv3D(filters=512, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_9)
 # Concatenation of mp_4, conv_52
 concat_10 = concatenate([mp_4, conv_52], axis=4)
+
+
+# Defining decoder path layers
+# First block
+tr_1 = Conv3DTranspose(filters=256, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(concat_10)
+conv_61 = Conv3D(filters=256, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_1)
+# Concatenation of tr_1, conv_61
+concat_11 = concatenate([tr_1, conv_61], axis=4)
+conv_62 = Conv3D(filters=256, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_11)
+# Concatenation of tr_1, conv_62
+concat_12 = concatenate([tr_1, conv_62], axis=4)
+
+# First skip connection
+sc_1 = concatenate([mp_3, concat_12], axis=4)
+
+# Second block
+tr_2 = Conv3DTranspose(filters=128, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(sc_1)
+conv_71 = Conv3D(filters=128, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_2)
+# Concatenation of tr_2, conv_71
+concat_13 = concatenate([tr_2, conv_71], axis=4)
+conv_72 = Conv3D(filters=128, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_13)
+# Concatenation of tr_2, conv_72
+concat_14 = concatenate([tr_2, conv_72], axis=4)
+
+# Second skip connection
+sc_2 = concatenate([mp_2, concat_14], axis=4)
+
+# Third block
+tr_3 = Conv3DTranspose(filters=64, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(sc_2)
+conv_81 = Conv3D(filters=64, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_3)
+# Concatenation of tr_3, conv_81
+concat_15 = concatenate([tr_3, conv_81], axis=4)
+conv_82 = Conv3D(filters=64, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_15)
+# Concatenation of tr_3, conv_82
+concat_16 = concatenate([tr_3, conv_82], axis=4)
+
+# Third skip connection
+sc_3 = concatenate([mp_1, concat_16], axis=4)
+
+# Forth block
+tr_4 = Conv3DTranspose(filters=32, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(sc_3)
+conv_91 = Conv3D(filters=32, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_4)
+# Concatenation of tr_4, conv_91
+concat_17 = concatenate([tr_4, conv_91], axis=4)
+conv_92 = Conv3D(filters=32, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_17)
+# Concatenation of tr_4, conv_92
+concat_18 = concatenate([tr_4, conv_92], axis=4)
+
+# Output layer
+out_layer = Conv3D(filters=1, kernel_size=(1, 1, 1), activation=sigmoid)(concat_18)
