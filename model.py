@@ -19,6 +19,10 @@ SPINE = (1, 2, 3)
 
 # Image Dimensions
 img_height = 256
-ing_width = 256
+img_width = 256
 img_depth = 256
 channels = 3
+
+
+# Defining input layer
+in_layer = Input((img_height, img_width, img_depth, channels))
