@@ -16,3 +16,9 @@ K.set_image_data_format("channels_last")
 # Kernel(Pool) Size
 BRAIN = (2, 2, 2)
 SPINE = (1, 2, 3)
+
+# Image Dimensions
+img_height = 256
+ing_width = 256
+img_depth = 256
+channels = 3
