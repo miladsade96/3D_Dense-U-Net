@@ -124,3 +124,7 @@ concat_18 = concatenate([tr_4, conv_92], axis=4)
 
 # Output layer
 out_layer = Conv3D(filters=1, kernel_size=(1, 1, 1), activation=sigmoid)(concat_18)
+
+# Instantiating the model
+model = Model(inputs=[in_layer], outputs=[out_layer], name="3D Dense U-Net")
+model.summary()
