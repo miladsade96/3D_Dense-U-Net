@@ -19,10 +19,10 @@ BRAIN = (2, 2, 2)
 SPINE = (1, 2, 2)
 
 # Image Dimensions
-img_height = 256
-img_width = 256
-img_depth = 256
-channels = 3
+img_height = 32
+img_width = 32
+img_depth = 32
+channels = 1
 
 
 # Defining input layer
