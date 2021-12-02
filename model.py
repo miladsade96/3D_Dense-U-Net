@@ -51,40 +51,20 @@ in_layer = Input((img_height, img_width, img_depth, channels))
 
 # Defining encoder path layers
 # First block
-conv_11 = Conv3D(filters=32, kernel_size=(3, 3, 3), padding="same", activation=relu)(in_layer)
-# Concatenation of input layer and conv_11
-concat_1 = concatenate([in_layer, conv_11], axis=4)
-conv_12 = Conv3D(filters=32, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_1)
-# Concatenation of input layer and conv_12
-concat_2 = concatenate([in_layer, conv_12], axis=4)
-mp_1 = MaxPooling3D(pool_size=BRAIN, strides=(2, 2, 2), padding="same")(concat_2)
+cb_1 = build_encoder_block(pl=in_layer, n_filters=32, k_size=(3, 3, 3), padding="same",
+                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
 
 # Second block
-conv_21 = Conv3D(filters=64, kernel_size=(3, 3, 3), padding="same", activation=relu)(mp_1)
-# Concatenation of mp_1, conv_21
-concat_3 = concatenate([mp_1, conv_21], axis=4)
-conv_22 = Conv3D(filters=64, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_3)
-# Concatenation of mp_1, conv_22
-concat_4 = concatenate([mp_1, conv_22], axis=4)
-mp_2 = MaxPooling3D(pool_size=BRAIN, strides=(2, 2, 2), padding="same")(concat_4)
+cb_2 = build_encoder_block(pl=cb_1, n_filters=64, k_size=(3, 3, 3), padding="same",
+                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
 
 # Third block
-conv_31 = Conv3D(filters=128, kernel_size=(3, 3, 3), padding="same", activation=relu)(mp_2)
-# Concatenation of mp_2, conv_31
-concat_5 = concatenate([mp_2, conv_31], axis=4)
-conv_32 = Conv3D(filters=128, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_5)
-# Concatenation of mp_2, conv_32
-concat_6 = concatenate([mp_2, conv_32], axis=4)
-mp_3 = MaxPooling3D(pool_size=BRAIN, strides=(2, 2, 2), padding="same")(concat_6)
+cb_3 = build_encoder_block(pl=cb_2, n_filters=128, k_size=(3, 3, 3), padding="same",
+                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
 
 # Fourth block
-conv_41 = Conv3D(filters=256, kernel_size=(3, 3, 3), padding="same", activation=relu)(mp_3)
-# Concatenation of mp_3, conv_41
-concat_7 = concatenate([mp_3, conv_41], axis=4)
-conv_42 = Conv3D(filters=256, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_7)
-# Concatenation of mp_3, conv_42
-concat_8 = concatenate([mp_3, conv_42], axis=4)
-mp_4 = MaxPooling3D(pool_size=BRAIN, strides=(2, 2, 2), padding="same")(concat_8)
+cb_4 = build_encoder_block(pl=cb_3, n_filters=256, k_size=(3, 3, 3), padding="same",
+                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
 
 
 # Defining the bridge block
