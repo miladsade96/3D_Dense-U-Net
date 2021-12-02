@@ -45,6 +45,26 @@ def build_encoder_block(pl, n_filters, k_size, padding, af, p_size, strides):
     return mp
 
 
+def build_decoder_block(pl, n_filters, k_size_tr, k_size , strides, padding, af):
+    """
+    Decoder path convolution block builder
+    :param pl: previous layer
+    :param n_filters: number of filters in Conv3D and Conv3DTranspose layer
+    :param k_size_tr: kernel size in Conv3DTranspose layer
+    :param k_size: kernel size in Conv3D layer
+    :param strides: strides in Conv3DTranspose layer
+    :param padding: same
+    :param af: activation function in Conv3D layer
+    :return: Upsampling block
+    """
+    tr_1 = Conv3DTranspose(filters=n_filters, kernel_size=k_size_tr, strides=strides, padding=padding)(pl)
+    conv_1 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(tr_1)
+    concat_1 = concatenate([tr_1, conv_1], axis=4)
+    conv_2 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(concat_1)
+    concat_2 = concatenate([tr_1, conv_2], axis=4)
+    return concat_2
+
+
 def build_bridge_block(pl, n_filters=512, k_size=(3, 3, 3), padding="same", af=relu):
     """
     Bridge convolution block builder
