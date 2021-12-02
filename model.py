@@ -25,6 +25,26 @@ img_depth = 32
 channels = 1
 
 
+def build_encoder_block(pl, n_filters, k_size, padding, af, p_size, strides):
+    """
+    Encoder path convolution block builder
+    :param pl: previous layer
+    :param n_filters: number of filters in convolution layer
+    :param k_size: kernel size in convolution layer
+    :param padding: same
+    :param af: activation function in convolution layer
+    :param p_size: pool size in downsampling layer
+    :param strides: strides in downsampling layer
+    :return: convolution block
+    """
+    conv_1 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(pl)
+    concat_1 = concatenate([pl, conv_1], axis=4)
+    conv_2 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(concat_1)
+    concat_2 = concatenate([pl, conv_2], axis=4)
+    mp = MaxPooling3D(pool_size=p_size, strides=strides, padding=padding)(concat_2)
+    return mp
+
+
 # Defining input layer
 in_layer = Input((img_height, img_width, img_depth, channels))
 
