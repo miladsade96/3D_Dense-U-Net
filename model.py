@@ -45,6 +45,23 @@ def build_encoder_block(pl, n_filters, k_size, padding, af, p_size, strides):
     return mp
 
 
+def build_bridge_block(pl, n_filters=512, k_size=(3, 3, 3), padding="same", af=relu):
+    """
+    Bridge convolution block builder
+    :param pl: previous layer
+    :param n_filters: number of filters in convolution layer, default is 512
+    :param k_size: kernel size in convolution layer, default is (3, 3, 3)
+    :param padding: default is same
+    :param af: activation function in convolution layer, default is relu
+    :return: convolution block
+    """
+    conv_1 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(pl)
+    concat_1 = concatenate([pl, conv_1], axis=4)
+    conv_2 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(concat_1)
+    concat_2 = concatenate([pl, conv_2], axis=4)
+    return concat_2
+
+
 # Defining input layer
 in_layer = Input((img_height, img_width, img_depth, channels))
 
