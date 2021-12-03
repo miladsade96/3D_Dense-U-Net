@@ -122,4 +122,7 @@ out_layer = Conv3D(filters=1, kernel_size=(1, 1, 1), activation=sigmoid)(db_4)
 
 # Instantiating the model
 model = Model(inputs=[in_layer], outputs=[out_layer], name="3D Dense U-Net")
-model.summary()
+
+
+if __name__ == '__main__':
+    model.summary()
