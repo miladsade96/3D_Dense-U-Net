@@ -25,16 +25,16 @@ img_depth = 32
 channels = 1
 
 
-def build_encoder_block(pl, n_filters, k_size, padding, af, p_size, strides):
+def build_encoder_block(pl, n_filters, k_size=(3, 3, 3), padding="same", af=relu, p_size=BRAIN, strides=(2, 2, 2)):
     """
     Encoder path convolution block builder
     :param pl: previous layer
     :param n_filters: number of filters in convolution layer
-    :param k_size: kernel size in convolution layer
-    :param padding: same
-    :param af: activation function in convolution layer
-    :param p_size: pool size in downsampling layer
-    :param strides: strides in downsampling layer
+    :param k_size: kernel size in convolution layer, default value is (3, 3, 3)
+    :param padding: default value is 'same'
+    :param af: activation function in convolution layer, default value is relu
+    :param p_size: pool size in downsampling layer, default value is BRAIN
+    :param strides: strides in downsampling layer, default value is (2, 2, 2)
     :return: convolution block
     """
     conv_1 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(pl)
@@ -88,20 +88,14 @@ in_layer = Input((img_height, img_width, img_depth, channels))
 
 # Defining encoder path layers
 # First block
-cb_1 = build_encoder_block(pl=in_layer, n_filters=32, k_size=(3, 3, 3), padding="same",
-                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
-
+cb_1 = build_encoder_block(pl=in_layer, n_filters=32)
 # Second block
-cb_2 = build_encoder_block(pl=cb_1, n_filters=64, k_size=(3, 3, 3), padding="same",
-                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
-
+cb_2 = build_encoder_block(pl=cb_1, n_filters=64)
 # Third block
-cb_3 = build_encoder_block(pl=cb_2, n_filters=128, k_size=(3, 3, 3), padding="same",
-                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
-
+cb_3 = build_encoder_block(pl=cb_2, n_filters=128)
 # Fourth block
-cb_4 = build_encoder_block(pl=cb_3, n_filters=256, k_size=(3, 3, 3), padding="same",
-                           af=relu, p_size=BRAIN, strides=(2, 2, 2))
+cb_4 = build_encoder_block(pl=cb_3, n_filters=256)
+
 
 # Defining the bridge block
 bb = build_bridge_block(pl=cb_4)
