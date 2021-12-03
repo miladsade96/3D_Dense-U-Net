@@ -45,16 +45,16 @@ def build_encoder_block(pl, n_filters, k_size=(3, 3, 3), padding="same", af=relu
     return mp
 
 
-def build_decoder_block(pl, n_filters, k_size_tr, k_size , strides, padding, af):
+def build_decoder_block(pl, n_filters, k_size_tr=(2, 2, 2), k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu):
     """
     Decoder path convolution block builder
     :param pl: previous layer
     :param n_filters: number of filters in Conv3D and Conv3DTranspose layer
-    :param k_size_tr: kernel size in Conv3DTranspose layer
-    :param k_size: kernel size in Conv3D layer
-    :param strides: strides in Conv3DTranspose layer
-    :param padding: same
-    :param af: activation function in Conv3D layer
+    :param k_size_tr: kernel size in Conv3DTranspose layer, default value is (2, 2, 2)
+    :param k_size: kernel size in Conv3D layer, default value is (3, 3, 3)
+    :param strides: strides in Conv3DTranspose layer, default value is BRAIN
+    :param padding: default value is 'same'
+    :param af: activation function in Conv3D layer, default value is relu
     :return: Upsampling block
     """
     tr_1 = Conv3DTranspose(filters=n_filters, kernel_size=k_size_tr, strides=strides, padding=padding)(pl)
@@ -103,23 +103,19 @@ bb = build_bridge_block(pl=cb_4)
 
 # Defining decoder path layers
 # First block
-db_1 = build_decoder_block(pl=bb, n_filters=256, k_size_tr=(2, 2, 2),
-                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
+db_1 = build_decoder_block(pl=bb, n_filters=256)
 # First skip connection
 sc_1 = concatenate([cb_3, db_1], axis=4)
 # Second block
-db_2 = build_decoder_block(pl=sc_1, n_filters=128, k_size_tr=(2, 2, 2),
-                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
+db_2 = build_decoder_block(pl=sc_1, n_filters=128)
 # Second skip connection
 sc_2 = concatenate([cb_2, db_2], axis=4)
 # Third block
-db_3 = build_decoder_block(pl=sc_2, n_filters=64, k_size_tr=(2, 2, 2),
-                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
+db_3 = build_decoder_block(pl=sc_2, n_filters=64)
 # Third skip connection
 sc_3 = concatenate([cb_1, db_3], axis=4)
 # Forth block
-db_4 = build_decoder_block(pl=sc_3, n_filters=32, k_size_tr=(2, 2, 2),
-                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
+db_4 = build_decoder_block(pl=sc_3, n_filters=32)
 
 # Output layer
 out_layer = Conv3D(filters=1, kernel_size=(1, 1, 1), activation=sigmoid)(db_4)
