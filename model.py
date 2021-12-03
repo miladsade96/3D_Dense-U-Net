@@ -103,64 +103,32 @@ cb_3 = build_encoder_block(pl=cb_2, n_filters=128, k_size=(3, 3, 3), padding="sa
 cb_4 = build_encoder_block(pl=cb_3, n_filters=256, k_size=(3, 3, 3), padding="same",
                            af=relu, p_size=BRAIN, strides=(2, 2, 2))
 
-
 # Defining the bridge block
-conv_51 = Conv3D(filters=512, kernel_size=(3, 3, 3), padding="same", activation=relu)(mp_4)
-# Concatenation of mp_4, conv_51
-concat_9 = concatenate([mp_4, conv_51], axis=4)
-conv_52 = Conv3D(filters=512, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_9)
-# Concatenation of mp_4, conv_52
-concat_10 = concatenate([mp_4, conv_52], axis=4)
+bb = build_bridge_block(pl=cb_4)
 
 
 # Defining decoder path layers
 # First block
-tr_1 = Conv3DTranspose(filters=256, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(concat_10)
-conv_61 = Conv3D(filters=256, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_1)
-# Concatenation of tr_1, conv_61
-concat_11 = concatenate([tr_1, conv_61], axis=4)
-conv_62 = Conv3D(filters=256, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_11)
-# Concatenation of tr_1, conv_62
-concat_12 = concatenate([tr_1, conv_62], axis=4)
-
+db_1 = build_decoder_block(pl=bb, n_filters=256, k_size_tr=(2, 2, 2),
+                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
 # First skip connection
-sc_1 = concatenate([mp_3, concat_12], axis=4)
-
+sc_1 = concatenate([cb_3, db_1], axis=4)
 # Second block
-tr_2 = Conv3DTranspose(filters=128, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(sc_1)
-conv_71 = Conv3D(filters=128, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_2)
-# Concatenation of tr_2, conv_71
-concat_13 = concatenate([tr_2, conv_71], axis=4)
-conv_72 = Conv3D(filters=128, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_13)
-# Concatenation of tr_2, conv_72
-concat_14 = concatenate([tr_2, conv_72], axis=4)
-
+db_2 = build_decoder_block(pl=sc_1, n_filters=128, k_size_tr=(2, 2, 2),
+                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
 # Second skip connection
-sc_2 = concatenate([mp_2, concat_14], axis=4)
-
+sc_2 = concatenate([cb_2, db_2], axis=4)
 # Third block
-tr_3 = Conv3DTranspose(filters=64, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(sc_2)
-conv_81 = Conv3D(filters=64, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_3)
-# Concatenation of tr_3, conv_81
-concat_15 = concatenate([tr_3, conv_81], axis=4)
-conv_82 = Conv3D(filters=64, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_15)
-# Concatenation of tr_3, conv_82
-concat_16 = concatenate([tr_3, conv_82], axis=4)
-
+db_3 = build_decoder_block(pl=sc_2, n_filters=64, k_size_tr=(2, 2, 2),
+                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
 # Third skip connection
-sc_3 = concatenate([mp_1, concat_16], axis=4)
-
+sc_3 = concatenate([cb_1, db_3], axis=4)
 # Forth block
-tr_4 = Conv3DTranspose(filters=32, kernel_size=(2, 2, 2), strides=BRAIN, padding="same")(sc_3)
-conv_91 = Conv3D(filters=32, kernel_size=(3, 3, 3), padding="same", activation=relu)(tr_4)
-# Concatenation of tr_4, conv_91
-concat_17 = concatenate([tr_4, conv_91], axis=4)
-conv_92 = Conv3D(filters=32, kernel_size=(3, 3, 3), padding="same", activation=relu)(concat_17)
-# Concatenation of tr_4, conv_92
-concat_18 = concatenate([tr_4, conv_92], axis=4)
+db_4 = build_decoder_block(pl=sc_3, n_filters=32, k_size_tr=(2, 2, 2),
+                           k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu)
 
 # Output layer
-out_layer = Conv3D(filters=1, kernel_size=(1, 1, 1), activation=sigmoid)(concat_18)
+out_layer = Conv3D(filters=1, kernel_size=(1, 1, 1), activation=sigmoid)(db_4)
 
 # Instantiating the model
 model = Model(inputs=[in_layer], outputs=[out_layer], name="3D Dense U-Net")
