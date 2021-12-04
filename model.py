@@ -68,7 +68,8 @@ def build_decoder_block(pl: Tensor, n_filters: int, k_size_tr: Tuple = (2, 2, 2)
     return concat_2
 
 
-def build_bridge_block(pl, n_filters=512, k_size=(3, 3, 3), padding="same", af=relu):
+def build_bridge_block(pl: Tensor, n_filters: int = 512, k_size: Tuple = (3, 3, 3),
+                       padding: str = "same", af: GenericFunction = relu) -> Tensor:
     """
     Bridge convolution block builder
     :param pl: previous layer
@@ -76,7 +77,7 @@ def build_bridge_block(pl, n_filters=512, k_size=(3, 3, 3), padding="same", af=r
     :param k_size: kernel size in convolution layer, default is (3, 3, 3)
     :param padding: default is same
     :param af: activation function in convolution layer, default is relu
-    :return: convolution block
+    :return: Tensor
     """
     conv_1 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(pl)
     concat_1 = concatenate([pl, conv_1], axis=4)
