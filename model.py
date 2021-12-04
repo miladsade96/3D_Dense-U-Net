@@ -47,7 +47,8 @@ def build_encoder_block(pl: Tensor, n_filters: int, k_size: Tuple = (3, 3, 3), p
     return mp
 
 
-def build_decoder_block(pl, n_filters, k_size_tr=(2, 2, 2), k_size=(3, 3, 3), strides=BRAIN, padding="same", af=relu):
+def build_decoder_block(pl: Tensor, n_filters: int, k_size_tr: Tuple = (2, 2, 2), k_size: Tuple = (3, 3, 3),
+                        strides: Tuple = BRAIN, padding: str = "same", af: Tensor = relu) -> Tensor:
     """
     Decoder path convolution block builder
     :param pl: previous layer
@@ -57,7 +58,7 @@ def build_decoder_block(pl, n_filters, k_size_tr=(2, 2, 2), k_size=(3, 3, 3), st
     :param strides: strides in Conv3DTranspose layer, default value is BRAIN
     :param padding: default value is 'same'
     :param af: activation function in Conv3D layer, default value is relu
-    :return: Upsampling block
+    :return: Tensor
     """
     tr_1 = Conv3DTranspose(filters=n_filters, kernel_size=k_size_tr, strides=strides, padding=padding)(pl)
     conv_1 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(tr_1)
