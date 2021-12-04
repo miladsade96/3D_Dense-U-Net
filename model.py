@@ -26,7 +26,8 @@ img_depth = 32
 channels = 1
 
 
-def build_encoder_block(pl, n_filters, k_size=(3, 3, 3), padding="same", af=relu, p_size=BRAIN, strides=(2, 2, 2)):
+def build_encoder_block(pl: Tensor, n_filters: int, k_size: Tuple = (3, 3, 3), padding: str = "same",
+                        af: Tensor = relu, p_size: Tuple = BRAIN, strides: Tuple = (2, 2, 2)) -> Tensor:
     """
     Encoder path convolution block builder
     :param pl: previous layer
@@ -36,7 +37,7 @@ def build_encoder_block(pl, n_filters, k_size=(3, 3, 3), padding="same", af=relu
     :param af: activation function in convolution layer, default value is relu
     :param p_size: pool size in downsampling layer, default value is BRAIN
     :param strides: strides in downsampling layer, default value is (2, 2, 2)
-    :return: convolution block
+    :return: Tensor
     """
     conv_1 = Conv3D(filters=n_filters, kernel_size=k_size, padding=padding, activation=af)(pl)
     concat_1 = concatenate([pl, conv_1], axis=4)
