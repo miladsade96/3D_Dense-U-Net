@@ -7,7 +7,7 @@
 from typing import Tuple
 import tensorflow.keras.backend as K
 from tensorflow.keras.models import Model
-from tensorflow.python.types.core import Tensor
+from tensorflow.python.types.core import Tensor, GenericFunction
 from tensorflow.keras.activations import relu, sigmoid
 from tensorflow.keras.layers import (Conv3DTranspose, Conv3D, MaxPooling3D, concatenate, Input)
 
@@ -27,7 +27,7 @@ channels = 1
 
 
 def build_encoder_block(pl: Tensor, n_filters: int, k_size: Tuple = (3, 3, 3), padding: str = "same",
-                        af: Tensor = relu, p_size: Tuple = BRAIN, strides: Tuple = (2, 2, 2)) -> Tensor:
+                        af: GenericFunction = relu, p_size: Tuple = BRAIN, strides: Tuple = (2, 2, 2)) -> Tensor:
     """
     Encoder path convolution block builder
     :param pl: previous layer
@@ -48,7 +48,7 @@ def build_encoder_block(pl: Tensor, n_filters: int, k_size: Tuple = (3, 3, 3), p
 
 
 def build_decoder_block(pl: Tensor, n_filters: int, k_size_tr: Tuple = (2, 2, 2), k_size: Tuple = (3, 3, 3),
-                        strides: Tuple = BRAIN, padding: str = "same", af: Tensor = relu) -> Tensor:
+                        strides: Tuple = BRAIN, padding: str = "same", af: GenericFunction = relu) -> Tensor:
     """
     Decoder path convolution block builder
     :param pl: previous layer
