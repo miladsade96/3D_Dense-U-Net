@@ -4,9 +4,10 @@
     Author: Milad Sadeghi DM - EverLookNeverSee@GitHub.com
 """
 
-
+from typing import Tuple
 import tensorflow.keras.backend as K
 from tensorflow.keras.models import Model
+from tensorflow.python.types.core import Tensor
 from tensorflow.keras.activations import relu, sigmoid
 from tensorflow.keras.layers import (Conv3DTranspose, Conv3D, MaxPooling3D, concatenate, Input)
 
